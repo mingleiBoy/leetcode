@@ -21,9 +21,40 @@ class ListNode {
 
 class Solution {
     public static ListNode addTwoNumbers(ListNode l1, ListNode l2) {
-        return new ListNode(1);
-    }
+        ListNode node = new ListNode(-1);
+        ListNode head = node;
 
+        int count = 0;  // 进位
+        while (l1 != null || l2 != null) {
+            if (l1 == null) {
+                head.val = (l2.val + count) % 10;
+                count = l2.val + count > 9 ? 1 : 0;
+
+                l2 = l2.next;
+            } else if (l2 == null) {
+                head.val = (l1.val + count) % 10;
+                count = l1.val + count > 9 ? 1 : 0;
+
+                l1 = l1.next;
+            } else {
+                head.val = (l1.val + l2.val + count) % 10;
+                count = l1.val + l2.val + count > 9 ? 1 : 0;
+
+                l1 = l1.next;
+                l2 = l2.next;
+            }
+
+            if (l1 != null || l2!= null) {
+                head.next = new ListNode(-1);
+                head = head.next;
+            } else if (count == 1) {
+                head.next = new ListNode(1);
+            }
+        }
+        
+        return node;
+    }
+    
     private static void show(ListNode node) {
         while (node != null) {
             System.out.println(node.val);
@@ -32,16 +63,15 @@ class Solution {
     }
 
     public static void main(String[] args) {
-        ListNode l1 = new ListNode(2);
-        l1.next = new ListNode(4);
-        l1.next.next = new ListNode(3);
+        ListNode l1 = new ListNode(1);
+        // l1.next = new ListNode(4);
+        // l1.next.next = new ListNode(3); 
 
-        ListNode l2 = new ListNode(5);
-        l2.next = new ListNode(6);
-        l2.next.next = new ListNode(4);
+        ListNode l2 = new ListNode(9);
+        l2.next = new ListNode(0);
+        l2.next.next = new ListNode(1);
+        // l2.next.next.next = new ListNode(1);
 
-        // ListNode node = addTwoNumbers(l1, l2);
-        show(l1);
-        show(l2);
+        show(addTwoNumbers(l1, l2));
     }
 }
