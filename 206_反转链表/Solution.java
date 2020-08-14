@@ -21,25 +21,42 @@ class ListNode {
 
 class Solution {
     // 递归
+    // public static ListNode reverseList(ListNode head) {
+    //     if (head == null || head.next == null) return head;
+
+    //     ListNode[] nodes = new ListNode[1];
+    //     reverseListImpl(nodes, head);
+    //     return nodes[0];
+    // }
+
+    // private static ListNode reverseListImpl(ListNode[] nodes, ListNode head) {
+    //     if (head.next == null) {
+    //         nodes[0] = head;
+    //         return head;        
+    //     }
+
+    //     ListNode next = reverseListImpl(nodes, head.next);
+    //     next.next = head;
+    //     head.next = null;
+        
+    //     return head;
+    // }
+
+    // 迭代
     public static ListNode reverseList(ListNode head) {
         if (head == null || head.next == null) return head;
-
-        ListNode[] nodes = new ListNode[1];
-        reverseListImpl(nodes, head);
-        return nodes[0];
-    }
-
-    private static ListNode reverseListImpl(ListNode[] nodes, ListNode head) {
-        if (head.next == null) {
-            nodes[0] = head;
-            return head;        
-        }
-
-        ListNode next = reverseListImpl(nodes, head.next);
-        next.next = head;
-        head.next = null;
         
-        return head;
+        ListNode father = head;
+        ListNode child = head.next;
+        while (child != null) {
+            ListNode nextChild = child.next;
+            child.next = father;
+
+            father = child;
+            child = nextChild;
+        }
+        head.next = null;
+        return father;
     }
 
     private static void show(ListNode node) {
