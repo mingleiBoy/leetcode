@@ -38,6 +38,9 @@ class TreeNode:
         self.left = None
         self.right = None
 
+# AC不过:
+#   1. 理解错平衡二叉树定义，初始算法是计算最长高度和最短高度差
+
 
 class Solution:
     def isBalancedHelper(self, root: TreeNode) -> (bool, int):
