@@ -19,6 +19,7 @@ from typing import List
 # 若向内移动短板，水槽的短板 可能变大，因此水槽面积 S(i, j)S(i,j) 可能增大。
 # 若向内移动长板，水槽的短板 不变或变小，下个水槽的面积 一定小于 当前水槽面积。
 
+
 class Solution:
     class Solution:
         def maxArea(self, height: List[int]) -> int:
