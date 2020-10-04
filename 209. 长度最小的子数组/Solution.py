@@ -24,18 +24,19 @@ class Solution:
                 return 1
             return 0
 
-        start, end, min_length, cur_sum = 0, 1, 0, nums[0]
+        # 滑动窗口，向右滑动，右指针越界停止
+        start, end, min_length, cur_sum = 0, 1, float("inf"), nums[0]
         while end < n:
             if nums[start] >= s or nums[end] >= s:
                 return 1
+            # 扩大窗口（右指针右移）
             if cur_sum + nums[end] < s:
                 cur_sum += nums[end]
                 end += 1
+            # 收窄窗口 (左指针右移)
             else:
-                if min_length == 0:
-                    min_length = end - start + 1
-                else:
-                    min_length = min(min_length, end - start + 1)
+                min_length = min(min_length, end - start + 1)
                 cur_sum -= nums[start]
                 start += 1
-        return min_length
+
+        return 0 if min_length == float("inf") else min_length
