@@ -46,48 +46,91 @@
 # 来源：力扣（LeetCode）
 # 链接：https://leetcode-cn.com/problems/string-to-integer-atoi
 # 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+# https://leetcode-cn.com/problems/string-to-integer-atoi/solution/zi-fu-chuan-zhuan-huan-zheng-shu-atoi-by-leetcode-/
+
+# class Solution:
+#     def myAtoi(self, s: str) -> int:
+#         if not s:
+#             return 0
+#
+#         flag = 0
+#         res = 0
+#         for ch in s:
+#             if ch == "+" or ch == "-":
+#                 if flag == 0:
+#                     flag = 1 if ch == "+" else -1
+#                     continue
+#                 else:
+#                     break
+#
+#             if flag == 0 and ch != " " and not self.isDigital(ch):
+#                 return 0
+#
+#             if flag != 0 and (ch == " " or not self.isDigital(ch)):
+#                 break
+#
+#             if self.isDigital(ch):
+#                 if flag == 0:
+#                     flag = 1
+#                 res = res * 10 + self.charToi(ch)
+#
+#             if ch == ' ':
+#                 if res == 0:
+#                     continue
+#                 else:
+#                     break
+#
+#         limit = (1 << 31) - 1 if flag > 0 else 1 << 31
+#         res = min(res, limit)
+#         return res if flag > 0 else -res
+#
+#     def isDigital(self, s: str) -> bool:
+#         return True if '0' <= s <= '9' else False
+#
+#     def charToi(self, s: str) -> int:
+#         return int(s)
+
+
+INT_MAX = 2 ** 31 - 1
+INT_MIN = -2 ** 31
+
+
+class Automaton:
+    def __init__(self):
+        self.state = 'start'
+        self.sign = 1
+        self.ans = 0
+        self.table = {
+            'start': ['start', 'signed', 'in_number', 'end'],
+            'signed': ['end', 'end', 'in_number', 'end'],
+            'in_number': ['end', 'end', 'in_number', 'end'],
+            'end': ['end', 'end', 'end', 'end'],
+        }
+
+    def get_col(self, c):
+        if c.isspace():
+            return 0
+        if c == '+' or c == '-':
+            return 1
+        if c.isdigit():
+            return 2
+        return 3
+
+    def get(self, c):
+        self.state = self.table[self.state][self.get_col(c)]
+        if self.state == 'in_number':
+            self.ans = self.ans * 10 + int(c)
+            self.ans = min(self.ans, INT_MAX) if self.sign == 1 else min(self.ans, -INT_MIN)
+        elif self.state == 'signed':
+            self.sign = 1 if c == '+' else -1
+
 
 class Solution:
-    def myAtoi(self, s: str) -> int:
-        if not s:
-            return 0
-
-        flag = 0
-        res = 0
-        for ch in s:
-            if ch == "+" or ch == "-":
-                if flag == 0:
-                    flag = 1 if ch == "+" else -1
-                    continue
-                else:
-                    break
-
-            if flag == 0 and ch != " " and not self.isDigital(ch):
-                return 0
-
-            if flag != 0 and (ch == " " or not self.isDigital(ch)):
-                break
-
-            if self.isDigital(ch):
-                if flag == 0:
-                    flag = 1
-                res = res * 10 + self.charToi(ch)
-
-            if ch == ' ':
-                if res == 0:
-                    continue
-                else:
-                    break
-
-        limit = (1 << 31) - 1 if flag > 0 else 1 << 31
-        res = min(res, limit)
-        return res if flag > 0 else -res
-
-    def isDigital(self, s: str) -> bool:
-        return True if '0' <= s <= '9' else False
-
-    def charToi(self, s: str) -> int:
-        return int(s)
+    def myAtoi(self, str: str) -> int:
+        automaton = Automaton()
+        for c in str:
+            automaton.get(c)
+        return automaton.sign * automaton.ans
 
 
 sln = Solution()
