@@ -23,19 +23,66 @@
 from typing import List
 
 
+# 平平无奇解法
+# class Solution:
+#     def maxProfit(self, prices: List[int]) -> int:
+#         n = len(prices)
+#         if n < 2:
+#             return 0
+#         max_profit = 0
+#         low = 0
+#         high = 1
+#         while high < n:
+#             if prices[high] < prices[low]:
+#                 low = high
+#             else:
+#                 max_profit = max(max_profit, prices[high] - prices[low])
+#             high += 1
+#
+#         return max_profit
+
+# 通用解法
+# https://leetcode-cn.com/circle/article/qiAgHn/
+# 时间 O(n)
+# 空间 O(n)
 class Solution:
     def maxProfit(self, prices: List[int]) -> int:
-        n = len(prices)
-        if n < 2:
+        if not prices:
             return 0
-        max_profit = 0
-        low = 0
-        high = 1
-        while high < n:
-            if prices[high] < prices[low]:
-                low = high
-            else:
-                max_profit = max(max_profit, prices[high] - prices[low])
-            high += 1
 
-        return max_profit
+        length = len(prices)
+        dp = [[0 for col in range(2)] for row in range(length)]
+        dp[0][0] = 0
+        dp[0][1] = -prices[0]
+        for i in range(1, length):
+            dp[i][0] = max(dp[i - 1][0], dp[i - 1][1] + prices[i])
+            dp[i][1] = max(dp[i - 1][1], -prices[i])
+
+        print(dp)
+        return dp[-1][0]
+
+
+# 优化
+# 时间 O(n)
+# 空间 O(1)
+# 第 i 天的最大收益只和第 i - 1 天的最大收益相关
+class Solution:
+    def maxProfit(self, prices: List[int]) -> int:
+        if not prices:
+            return 0
+
+        length = len(prices)
+        profit0 = 0
+        profit1 = -prices[0]
+        print(profit0, profit1)
+        for i in range(1, length):
+            profit0 = max(profit0, profit1 + prices[i])
+            profit1 = max(profit1, -prices[i])
+            print(profit0, profit1)
+
+        return profit0
+
+
+sln = Solution()
+p = [7, 1, 5, 3, 6, 4]
+print(sln.maxProfit(p))
