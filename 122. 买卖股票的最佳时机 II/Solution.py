@@ -28,12 +28,38 @@
 # 链接：https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-ii
 # 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
 
+from typing import List
+
+
 # 通用解法   k为正无穷
 # https://leetcode-cn.com/circle/article/qiAgHn/
 # 时间 O(n)
 # 空间 O(n)
-from typing import List
+# class Solution:
+#     def maxProfit(self, prices: List[int]) -> int:
+#         if not prices:
+#             return 0
+#
+#         length = len(prices)
+#         dp = [[0 for _ in range(2)] for _ in range(length)]
+#         dp[0][0] = 0
+#         dp[0][1] = -prices[0]
+#         # 注意是从 1 开始，不是 0
+#         for i in range(1, length):
+#             dp[i][0] = max(dp[i - 1][0], dp[i - 1][1] + prices[i])
+#             dp[i][1] = max(dp[i - 1][1], dp[i - 1][0] - prices[i])
+#
+#         print(dp)
+#         return dp[-1][0]
 
+
+# 时间 O(n)
+# 空间 O(1)
+# 这个解法提供了获得最大收益的贪心策略：
+# 可能的情况下，在每个局部最小值买入股票，然后在之后遇到的第一个局部最大值卖出股票。
+# 这个做法等价于找到股票价格数组中的递增子数组，
+# 对于每个递增子数组，在开始位置买入并在结束位置卖出。
+# 可以看到，这和累计收益是相同的，只要这样的操作的收益为正。
 
 class Solution:
     def maxProfit(self, prices: List[int]) -> int:
@@ -41,19 +67,22 @@ class Solution:
             return 0
 
         length = len(prices)
-        dp = [[0 for _ in range(2)] for _ in range(length)]
-        dp[0][0] = 0
-        dp[0][1] = -prices[0]
-        # 注意是从 1 开始，不是 0 
-        for i in range(1, length):
-            dp[i][0] = max(dp[i - 1][0], dp[i - 1][1] + prices[i])
-            dp[i][1] = max(dp[i - 1][1], dp[i - 1][0] - prices[i])
 
-        print(dp)
-        return dp[-1][0]
+        profit0 = 0
+        profit1 = -prices[0]
+
+        # 注意是从 1 开始，不是 0
+        for i in range(1, length):
+            new_profit0 = max(profit0, profit1 + prices[i])
+            new_profit1 = max(profit1, profit0 - prices[i])
+            profit0 = new_profit0
+            profit1 = new_profit1
+            print(profit0, profit1)
+
+        return profit0
 
 
 sln = Solution()
-# p = [7, 1, 5, 3, 6, 4]
-p = [1, 2, 3, 4, 5]
+p = [7, 1, 5, 3, 6, 4]
+# p = [1, 2, 3, 4, 5]
 print(sln.maxProfit(p))
