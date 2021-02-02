@@ -24,6 +24,7 @@
 from typing import List
 
 # 从左下角开始遍历
+# 也可以从右上角开始遍历。但是不能是其他两个顶点。（想想是问什么？）
 # 注意理解思路，不要死死盯着 for 循环
 class Solution:
     def findNumberIn2DArray(self, matrix: List[List[int]], target: int) -> bool:
