@@ -35,6 +35,7 @@ class TreeNode:
         self.right = None
 
 # 应该背下来的题
+# 遇到二叉树的问题，首先想到递归
 class Solution:
     def buildTree(self, preorder: List[int], inorder: List[int]) -> TreeNode:
         def buildTreeHelper(root, left, right) -> TreeNode:

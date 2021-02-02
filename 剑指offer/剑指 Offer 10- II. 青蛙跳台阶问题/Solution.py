@@ -24,6 +24,7 @@
 # 链接：https://leetcode-cn.com/problems/qing-wa-tiao-tai-jie-wen-ti-lcof
 # 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
 
+# 都是典型的动态规划问题
 # 其实也应当注意大数越界问题，这里暂时不考虑了
 class Solution:
     def numWays(self, n: int) -> int:
