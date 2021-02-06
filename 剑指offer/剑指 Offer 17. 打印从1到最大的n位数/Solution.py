@@ -13,8 +13,11 @@
 from typing import List
 
 
-
 # 考察大数越界问题
 # 但是处理 001 这类的字符串也比较麻烦，比较数学，不复习了
 class Solution:
     def printNumbers(self, n: int) -> List[int]:
+        res = []
+        for i in range(1, 10 ** n):
+            res.append(i)
+        return res
