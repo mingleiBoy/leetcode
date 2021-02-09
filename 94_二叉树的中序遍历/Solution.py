@@ -55,6 +55,19 @@ def dfs(self, root: TreeNode):
     dfs()的 return 就相当于 f(0) 和 f(1) 这种初始值的解
     '''
 
+    '''
+    @里达：
+    
+    递归适用的场景：
+    1. 有限的空间，大问题转换为小问题的集合
+    2. 趋势走向是确定的、或者说是单调的
+    3. 一定是有尽头的
+    4. 每走一步路线是确定的，递归下去一定是走了所有的路线，只能重复，不会漏掉
+    理解：
+    递归也就是 root = return { .. return { .. return }}}，可以理解为block套block
+    中序遍历等例子：递归的妙处：子任务处理完之前，上层的代码是暂停的，只有同层的代码都执行完，再上一层才能继续。微妙的联想：autoreleasepool
+    '''
+
     print(root.val)
     self.dfs(root.right)
     return
